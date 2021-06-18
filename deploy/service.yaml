@@ -1,0 +1,16 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: webhook
+  labels:
+    name: webhook
+spec:
+  type: ClusterIP
+  selector:
+    name: webhook
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+
