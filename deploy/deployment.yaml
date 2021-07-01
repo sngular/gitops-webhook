@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webhook
-  namespace: gitops-series
   labels:
     name: webhook
 spec:
@@ -23,3 +22,10 @@ spec:
           ports:
           - containerPort: 8080
             name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 10Mi
+            limits:
+              cpu: 50m
+              memory: 10Mi
