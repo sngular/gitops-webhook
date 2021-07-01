@@ -3,9 +3,12 @@
 Servicio Golang utilizado en los ejercicios de la serie [GitOps Flux](https://github.com/Sngular/gitops-flux-series).
 
 Funcionalidades:
-- Recibe notificaciones en el formato de eventos de [Flux](https://fluxcd.io/docs) en el endpoint `/webhook`.
-- Lista todas las notificaciones cuando recibe una petición en el endpoint `/all`.
-- Elimina todas las notificaciones recibidas si recibe una petición en el endpoint `/clear`.
+
+|Punto de acceso |Descripción|
+|-----|-----------|
+|`/webhook`| Recibe notificaciones en el formato de eventos de [Flux](https://fluxcd.io/docs). |
+|`/all`| Lista todas las notificaciones cuando recibe una petición. |
+|`/clear`| Elimina todas las notificaciones recibidas. |
 
 El formato de las notificaciones se corresponde con el siguiente paquete: https://github.com/fluxcd/pkg/tree/main/runtime/events/
 
@@ -14,12 +17,29 @@ El formato de las notificaciones se corresponde con el siguiente paquete: https:
 Para ver su funcionamiento utilice el siguiente comando:
 
 ```bash
-docker container run -d --rm ghcr.io/sngular/gitops-webhook:v0.1.0
-
-2021/06/18 17:54:21 Server started in port 8080
+docker container run --detach --rm \
+  --publish 8080:8080 \
+  ghcr.io/sngular/gitops-webhook:v0.2.1
 ```
 
-Enviar notifiación de prueba:
+Consultar los logs del sistema
+
+```bash
+{
+  WEBHOOK_CONTAINER=$(docker container ls --filter publish=8080 --quiet)
+  docker container logs $WEBHOOK_CONTAINER
+}
+```
+
+<details>
+  <summary>Resultado</summary>
+
+  ```
+  2021/07/01 18:49:24 Server started in port 8080
+  ```
+</details>
+
+Enviar notificación de prueba:
 
 ```bash
 # utilizando make
@@ -89,3 +109,12 @@ curl http://localhost:8080/clear
   Notifications cleared!
   ```
 </details>
+
+Detener el servicio:
+
+```bash
+{
+  WEBHOOK_CONTAINER=$(docker container ls --filter publish=8080 --quiet)
+  docker container stop $WEBHOOK_CONTAINER
+}
+```
