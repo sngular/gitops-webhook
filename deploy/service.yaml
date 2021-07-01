@@ -1,6 +1,5 @@
----
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: webhook
   labels:
@@ -10,7 +9,6 @@ spec:
   selector:
     name: webhook
   ports:
-  - name: http
-    port: 8080
-    targetPort: http
-
+    - name: http
+      port: 80
+      targetPort: http
